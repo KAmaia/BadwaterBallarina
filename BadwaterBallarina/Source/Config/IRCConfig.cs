@@ -6,57 +6,22 @@ using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Config {
 	class IRCConfig {
-		#region fields
+		//ToDo: Serialize this.  
+		#region Autoproperties
 		//Config Info
-		private String name;
-		//Server Info
-		private string ircAddr;
-		private int ircPort;
-
-		//User Info
-		private string ircUser;
-		private string ircNick;
-		private string ircPassw;
-
-		//channel info
-		private List<string> ircChannels;
-		#endregion
-
-		#region properties
-		//Config Info
-		public String Name {
-			get { return name; }
-			set { name = value; }
-		}
+		public String Name { get; set; }
 		//server info
-		public string IrcAddr {
-			get { return ircAddr; }
-			set { ircAddr = value; }
-		}
-		public int IrcPort {
-			get { return ircPort; }
-			set { ircPort = value; }
-		}
+		public string IrcAddr { get; set; }
+
+		public int IrcPort { get; set; }
 
 		//User Info
-		public string IrcUser {
-			get { return ircUser; }
-			set { ircUser = value; }
-		}
-		public string IrcNick {
-			get { return ircNick; }
-			set { ircNick = value; }
-		}
-		public string IrcPassw {
-			get { return ircPassw; }
-			set { ircPassw = value; }
-		}
+		public string IrcUser { get; set; }
+		public string IrcNick { get; set; }
+		public string IrcPassw { get; set; }
 
 		//channel info
-		public List<string> IrcChannels {
-			get { return ircChannels; }
-			set { ircChannels = value; }
-		}
+		public List<string> IrcChannels { get; set; }
 		#endregion
 
 	}

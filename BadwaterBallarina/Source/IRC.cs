@@ -10,6 +10,12 @@ using BadwaterBallarina.Config;
 
 namespace BadwaterBallarina {
 	class IRC {
+
+		//ToDo: Make all of this a config, and just get the values from there.
+		//That way we can 
+		//forEach(ircConfig ic in IRC Configs){
+		//	InternalConnect(ic);
+		// }
 		private string ircPW;
 		private string ircNick;
 		private int ircPort;
@@ -39,9 +45,8 @@ namespace BadwaterBallarina {
 		public void Connect( ) {
 			if ( !connected ) {
 				InternalConnect( );
-				connected = true;
 				while ( connected ) {
-					//doStuff;
+					
 				}
 			}
 			else {
@@ -64,6 +69,7 @@ namespace BadwaterBallarina {
 			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircNick, 0, ircNick ) );
 			SendServerMessage( String.Format( "NICK {0}", ircNick ) );
 			JoinChannels( );
+			connected = true;
 		}
 		private void JoinChannels( ) {
 			foreach ( string channel in ircChannels ) {
