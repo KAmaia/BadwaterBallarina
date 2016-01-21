@@ -11,10 +11,15 @@ namespace BadwaterBallarina {
 		static void Main( string[ ] args ) {
 			Ballarina badwaterBallarina = new Ballarina();
 			badwaterBallarina.ballarinaIRC.Connect( );
+			Console.WriteLine( "Press Any Key To Continue!" );
+			Console.Read( );
 		}
 
 		private Ballarina( ) {
-			ballarinaIRC = new IRC( "irc.freenode.net", 6667, "BW_Ballarina", "**********", "#Badwater" );
+			Configurator cf = new Configurator();
+
+			//Commented out so we can test the CONFIGURATOR!
+			ballarinaIRC = new IRC( cf.ReadAndCreateConfig( "..\\Configs\\connections.cfg" ) );
 
 		}
 

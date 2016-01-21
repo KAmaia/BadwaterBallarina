@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BadwaterBallarina {
 	class IRC {
-		private string authPW;
+		private string ircPW;
 		private string ircNick;
 		private int ircPort;
-		private string ircServer;
-		private string ircChannels;
+		private string ircAddr;
+		private List<string> ircChannels;
 
 		private bool connected;
 
@@ -24,12 +24,12 @@ namespace BadwaterBallarina {
 		#endregion
 
 		#region CTOR
-		public IRC( string ircServer, int ircPort, string ircNick, string authPW, string ircChannels ) {
-			this.ircServer = ircServer;
-			this.ircPort = ircPort;
-			this.ircNick = ircNick;
-			this.authPW = authPW;
-			this.ircChannels = ircChannels;
+		public IRC(IRCConfig config ) {
+			this.ircAddr = config.IrcAddr;
+			this.ircPort = config.IrcPort;
+			this.ircNick = config.IrcNick;
+			this.ircPW = config.IrcPassw;
+			this.ircChannels = config.IrcChannels;
 			connected = false;
 		}
 		#endregion
@@ -50,23 +50,29 @@ namespace BadwaterBallarina {
 
 		//why do it this way?  Who cares?
 		private void InternalConnect( ) {
-			this.IRCConnection = new TcpClient( ircServer, ircPort );
+			this.IRCConnection = new TcpClient( ircAddr, ircPort );
 			this.IRCConnection.ReceiveTimeout = 1000 * 60 * 5;
 			this.IRCStream = IRCConnection.GetStream( );
 			this.IRCReader = new StreamReader( IRCStream );
 			this.IRCWriter = new StreamWriter( IRCStream );
 			Console.WriteLine( IRCReader.Peek( ) );
 
-			Console.WriteLine( "Connected to: {0}", ircServer );
+			Console.WriteLine( "Connected to: {0}", ircAddr );
 			Console.WriteLine( "Sending Login Info!" );
 			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircNick, 0, ircNick ) );
 			SendServerMessage( String.Format( "NICK {0}", ircNick ) );
-			SendServerMessage( String.Format( "JOIN {0}", ircChannels ) );
-
-
-
-
+			JoinChannels( );
 		}
+		private void JoinChannels( ) {
+			foreach ( string channel in ircChannels ) {
+				Console.WriteLine( "Joining {0}", channel );
+				SendServerMessage( String.Format( "JOIN {0}", channel ) );
+			}
+		}
+
+
+
+
 
 		private void SendServerMessage( string message ) {
 			IRCWriter.WriteLine( message );

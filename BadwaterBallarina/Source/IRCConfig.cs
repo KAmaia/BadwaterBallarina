@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina.Source {
+namespace BadwaterBallarina {
 	class IRCConfig {
 		#region fields
+		//Config Info
+		private String name;
 		//Server Info
-		private string ircServer;
+		private string ircAddr;
 		private int ircPort;
 
 		//User Info
@@ -21,17 +23,40 @@ namespace BadwaterBallarina.Source {
 		#endregion
 
 		#region properties
+		//Config Info
+		public String Name {
+			get { return name; }
+			set { name = value; }
+		}
 		//server info
-		public string IrcServer { get { return ircServer; } }
-		public int IrcPort { get { return ircPort; } }
-		
+		public string IrcAddr {
+			get { return ircAddr; }
+			set { ircAddr = value; }
+		}
+		public int IrcPort {
+			get { return ircPort; }
+			set { ircPort = value; }
+		}
+
 		//User Info
-		public string IrcUser { get { return ircUser; } }
-		public string IrcNick { get { return ircNick; } }
-		public string IrcPassw { get { return ircPassw; } }
+		public string IrcUser {
+			get { return ircUser; }
+			set { ircUser = value; }
+		}
+		public string IrcNick {
+			get { return ircNick; }
+			set { ircNick = value; }
+		}
+		public string IrcPassw {
+			get { return ircPassw; }
+			set { ircPassw = value; }
+		}
 
 		//channel info
-		public List<string> IrcChannels { get { return ircChannels; } }
+		public List<string> IrcChannels {
+			get { return ircChannels; }
+			set { ircChannels = value; }
+		}
 		#endregion
 
 	}
