@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using BadwaterBallarina.Config;
+
 namespace BadwaterBallarina {
 	class IRC {
 		private string ircPW;

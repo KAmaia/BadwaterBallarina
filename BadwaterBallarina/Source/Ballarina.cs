@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//Local Uses
+using BadwaterBallarina.Config;
+
 namespace BadwaterBallarina {
 	class Ballarina {
 		private IRC ballarinaIRC;

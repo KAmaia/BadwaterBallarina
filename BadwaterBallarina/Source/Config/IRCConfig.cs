@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina {
+namespace BadwaterBallarina.Config {
 	class IRCConfig {
 		#region fields
 		//Config Info
