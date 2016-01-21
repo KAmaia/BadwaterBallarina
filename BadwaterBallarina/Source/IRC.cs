@@ -24,7 +24,7 @@ namespace BadwaterBallarina {
 		#endregion
 
 		#region CTOR
-		public IRC(string ircServer, int ircPort, string ircNick, string authPW, string ircChannels ) {
+		public IRC( string ircServer, int ircPort, string ircNick, string authPW, string ircChannels ) {
 			this.ircServer = ircServer;
 			this.ircPort = ircPort;
 			this.ircNick = ircNick;
@@ -55,22 +55,22 @@ namespace BadwaterBallarina {
 			this.IRCStream = IRCConnection.GetStream( );
 			this.IRCReader = new StreamReader( IRCStream );
 			this.IRCWriter = new StreamWriter( IRCStream );
-			Console.WriteLine( IRCReader.Peek() );
+			Console.WriteLine( IRCReader.Peek( ) );
 
 			Console.WriteLine( "Connected to: {0}", ircServer );
 			Console.WriteLine( "Sending Login Info!" );
 			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircNick, 0, ircNick ) );
 			SendServerMessage( String.Format( "NICK {0}", ircNick ) );
 			SendServerMessage( String.Format( "JOIN {0}", ircChannels ) );
-			
+
 
 
 
 		}
 
-		private void SendServerMessage( string message) {
+		private void SendServerMessage( string message ) {
 			IRCWriter.WriteLine( message );
 			IRCWriter.Flush( );
-		}	
+		}
 	}
 }
