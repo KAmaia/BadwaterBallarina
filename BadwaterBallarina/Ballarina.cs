@@ -14,7 +14,7 @@ namespace BadwaterBallarina {
 		}
 
 		private Ballarina( ) {
-			ballarinaIRC = new IRC( "irc.freenode.net", 6667, "Badwater_Bill", "h1llz90210", "#Badwater");
+			ballarinaIRC = new IRC( "irc.freenode.net", 6667, "BW_Ballarina", "**********", "#Badwater");
 			
 		}
 
