@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 
 using BadwaterBallarina.Config;
+using System.Text.RegularExpressions;
 
 namespace BadwaterBallarina.source.IRC {
 	class IRC {
@@ -66,19 +67,55 @@ namespace BadwaterBallarina.source.IRC {
 					}
 					Console.Out.WriteLine( incoming );
 					string[] incomingSplit = incoming.Split(' ');
-					if ( isPing( incomingSplit ) ) {
-						pingRespond( incomingSplit );
+					if ( IsPing( incomingSplit ) ) {
+						PingRespond( incomingSplit );
 					}
-					
+					if ( IsServerMessage( incomingSplit ) ) {
+						HandleServerCrapBecauseThereIsALotOfIt( incomingSplit );
+					}
 				}
 			}
 		}
 
-		private bool isPing( string[ ] incoming ) {
+		private void HandleServerCrapBecauseThereIsALotOfIt(string[] incoming ) {
+			string switcher = incoming[1];
+				switch(switcher){
+					//Ignore everything except Nick in use;
+					case "433":
+					Random rand = new Random();
+					SendServerMessage(String.Format("NICK {0}", ircNick + rand.Next(10000)));
+					SendServerMessage( String.Format( "PRIVMSG NICKSERV :GHOST {0} {1}", ircNick, ircPW ) );
+					Thread.Sleep( 2000 );
+					SendServerMessage( String.Format( "NICK {0}", ircNick ) );
+					SendServerMessage( String.Format( "PRIVMSG NICKSERV :Identify {0}", ircPW ) );
+					Thread.Sleep( 5000 );
+					JoinChannels( );
+					break;
+			}
+		}
+
+		private bool IsServerMessage( string[] incoming ) {
+			//check to see if the sender is the server
+			string sender = incoming[0];
+			Regex regex = new Regex(@"\..*\..+$");
+			Match possibleSender = regex.Match(sender);
+			Match serverMatch = regex.Match(ircAddr);
+			if ( !serverMatch.Success ) {
+				throw new Exception( "Hey, something went horribly wrong in serverMessage!" );
+			}
+			if ( !possibleSender.Success ) {
+				return false;
+			}
+			string possVal = possibleSender.Value;
+			string servVal = serverMatch.Value;
+			return ( servVal == possVal ); 
+		}
+
+		private bool IsPing( string[ ] incoming ) {
 			return incoming[0].ToLower( ) == "ping";
 		}
 
-		private void pingRespond( string[ ] incoming ) {
+		private void PingRespond( string[ ] incoming ) {
 			Console.Beep( );
 			string pingHash = "";
 			pingHash = string.Join( " ", incoming, 1, incoming.Length - 1 );
