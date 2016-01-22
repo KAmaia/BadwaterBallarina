@@ -4,11 +4,13 @@ using System.Net.Sockets;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+
 
 using BadwaterBallarina.Config;
 
-namespace BadwaterBallarina {
+namespace BadwaterBallarina.source.IRC {
 	class IRC {
 
 		//ToDo: Make all of this a config, and just get the values from there.
@@ -32,7 +34,7 @@ namespace BadwaterBallarina {
 		#endregion
 
 		#region CTOR
-		public IRC(IRCConfig config ) {
+		public IRC( IRCConfig config ) {
 			this.ircAddr = config.IrcAddr;
 			this.ircPort = config.IrcPort;
 			this.ircNick = config.IrcNick;
@@ -46,13 +48,45 @@ namespace BadwaterBallarina {
 			if ( !connected ) {
 				InternalConnect( );
 				while ( connected ) {
-					
+					Listen( );
 				}
 			}
 			else {
-				//already connected.  Return Error.
+				//already connected.  Return.
 				return;
 			}
+		}
+
+		private void Listen( ) {
+			while ( connected ) {
+				string incoming;
+				while ( ( incoming = IRCReader.ReadLine( ) ) != null ) {
+					if ( incoming.StartsWith( ":" ) ) {
+						incoming = incoming.Remove( 0, 1 );
+					}
+					Console.Out.WriteLine( incoming );
+					string[] incomingSplit = incoming.Split(' ');
+					if ( isPing( incomingSplit ) ) {
+						pingRespond( incomingSplit );
+					}
+					
+				}
+			}
+		}
+
+		private bool isPing( string[ ] incoming ) {
+			return incoming[0].ToLower( ) == "ping";
+		}
+
+		private void pingRespond( string[ ] incoming ) {
+			Console.Beep( );
+			string pingHash = "";
+			pingHash = string.Join( " ", incoming, 1, incoming.Length - 1 );
+			Console.WriteLine( "Responding with PONG {0}", pingHash );
+			SendServerMessage( "PONG " + pingHash );
+		}
+		private void JoinChannel( string channel ) {
+			SendServerMessage( String.Format( "JOIN {0}", channel ) );
 		}
 
 		//why do it this way?  Who cares?
@@ -62,25 +96,46 @@ namespace BadwaterBallarina {
 			this.IRCStream = IRCConnection.GetStream( );
 			this.IRCReader = new StreamReader( IRCStream );
 			this.IRCWriter = new StreamWriter( IRCStream );
-			Console.WriteLine( IRCReader.Peek( ) );
+
 
 			Console.WriteLine( "Connected to: {0}", ircAddr );
 			Console.WriteLine( "Sending Login Info!" );
 			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircNick, 0, ircNick ) );
 			SendServerMessage( String.Format( "NICK {0}", ircNick ) );
+
+			//Time to Authenticate.  
+			//ToDo: Replace with SASL
+			SendServerMessage( "PRIVMSG NICKSERV :identify " + ircPW );
+
+			//sleep for 5 seconds so that we have a chance to auth and get our mask, if applicable.
+			Thread.Sleep( 5000 );
 			JoinChannels( );
 			connected = true;
 		}
+
+
+
 		private void JoinChannels( ) {
 			foreach ( string channel in ircChannels ) {
 				Console.WriteLine( "Joining {0}", channel );
-				SendServerMessage( String.Format( "JOIN {0}", channel ) );
+				JoinChannel( channel );
 			}
 		}
 
 
+		private void sendChannelMessage( string channel, string message ) {
+			Console.WriteLine( channel );
+			if ( ircChannels.Contains( channel ) ) {
 
+				SendServerMessage( String.Format( "PRIVMSG {0} : {1}", channel, message ) );
+			}
+		}
 
+		private void ListenForMessages( ) {
+			while ( connected ) {
+
+			}
+		}
 
 		private void SendServerMessage( string message ) {
 			IRCWriter.WriteLine( message );

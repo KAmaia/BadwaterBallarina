@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 //Local Uses
 using BadwaterBallarina.Config;
+using BadwaterBallarina.source.IRC;
 
 namespace BadwaterBallarina {
 	class Ballarina {
@@ -23,6 +24,11 @@ namespace BadwaterBallarina {
 
 			//Commented out so we can test the CONFIGURATOR!
 			ballarinaIRC = new IRC( cf.ReadAndCreateConfig( "..\\Configs\\connections.cfg" ) );
+
+		}
+
+	
+		private void IRCCommandReceived(string ircCommand ) {
 
 		}
 

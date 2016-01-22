@@ -12,6 +12,7 @@ namespace BadwaterBallarina.Config {
 
 		}
 		public IRCConfig ReadAndCreateConfig( string filePath ) {
+			//Listify this.  But not yet
 			XmlDocument doc = new XmlDocument();
 			doc.Load( filePath );
 			Console.WriteLine( filePath );
@@ -49,12 +50,12 @@ namespace BadwaterBallarina.Config {
 
 				//ToDo: Replace this string list with actual channels.  
 				//We'll Figure that out later.
-				List<string> channelAddrs = new List<string>();
+				List<string> channelNames = new List<string>();
 				foreach (XmlElement xe1 in xe ) {
-					channelAddrs.Add( xe1.GetAttribute( "addr" ) );
+					channelNames.Add(xe1.GetAttribute("addr"));
 					Console.WriteLine( xe1.GetAttribute("name") );
 				}
-				ircConfig.IrcChannels = channelAddrs;
+				ircConfig.IrcChannels = channelNames;
 
 			}
 			return ircConfig;
