@@ -14,18 +14,9 @@ using System.Text.RegularExpressions;
 namespace BadwaterBallarina.source.IRC {
 	class IRC {
 
-		//ToDo: Make all of this a config, and just get the values from there.
-		//That way we can 
-		//forEach(ircConfig ic in IRC Configs){
-		//	InternalConnect(ic);
-		// }
-		private string ircPW;
-		private string ircNick;
-		private int ircPort;
-		private string ircAddr;
-		private List<string> ircChannels;
-
 		private bool connected;
+
+		private IRCConfig ircConfig;
 
 		#region NETWORK STUFF
 		public TcpClient IRCConnection { get; private set; }
@@ -36,11 +27,8 @@ namespace BadwaterBallarina.source.IRC {
 
 		#region CTOR
 		public IRC( IRCConfig config ) {
-			this.ircAddr = config.IrcAddr;
-			this.ircPort = config.IrcPort;
-			this.ircNick = config.IrcNick;
-			this.ircPW = config.IrcPassw;
-			this.ircChannels = config.IrcChannels;
+			ircConfig = config;
+
 			connected = false;
 		}
 		#endregion
@@ -83,11 +71,11 @@ namespace BadwaterBallarina.source.IRC {
 					//Ignore everything except Nick in use;
 					case "433":
 					Random rand = new Random();
-					SendServerMessage(String.Format("NICK {0}", ircNick + rand.Next(10000)));
-					SendServerMessage( String.Format( "PRIVMSG NICKSERV :GHOST {0} {1}", ircNick, ircPW ) );
+					SendServerMessage(String.Format("NICK {0}", ircConfig.IrcNick + rand.Next(10000)));
+					SendServerMessage( String.Format( "PRIVMSG NICKSERV :GHOST {0} {1}", ircConfig.IrcNick, ircConfig.IrcPassw ) );
 					Thread.Sleep( 2000 );
-					SendServerMessage( String.Format( "NICK {0}", ircNick ) );
-					SendServerMessage( String.Format( "PRIVMSG NICKSERV :Identify {0}", ircPW ) );
+					SendServerMessage( String.Format( "NICK {0}", ircConfig.IrcNick ) );
+					SendServerMessage( String.Format( "PRIVMSG NICKSERV :Identify {0}", ircConfig.IrcPassw ) );
 					Thread.Sleep( 5000 );
 					JoinChannels( );
 					break;
@@ -99,7 +87,7 @@ namespace BadwaterBallarina.source.IRC {
 			string sender = incoming[0];
 			Regex regex = new Regex(@"\..*\..+$");
 			Match possibleSender = regex.Match(sender);
-			Match serverMatch = regex.Match(ircAddr);
+			Match serverMatch = regex.Match(ircConfig.IrcAddr);
 			if ( !serverMatch.Success ) {
 				throw new Exception( "Hey, something went horribly wrong in serverMessage!" );
 			}
@@ -128,21 +116,21 @@ namespace BadwaterBallarina.source.IRC {
 
 		//why do it this way?  Who cares?
 		private void InternalConnect( ) {
-			this.IRCConnection = new TcpClient( ircAddr, ircPort );
-			this.IRCConnection.ReceiveTimeout = 1000 * 60 * 5;
-			this.IRCStream = IRCConnection.GetStream( );
-			this.IRCReader = new StreamReader( IRCStream );
-			this.IRCWriter = new StreamWriter( IRCStream );
+			IRCConnection = new TcpClient( ircConfig.IrcAddr, ircConfig.IrcPort );
+			IRCConnection.ReceiveTimeout = 1000 * 60 * 5;
+			IRCStream = IRCConnection.GetStream( );
+			IRCReader = new StreamReader( IRCStream );
+			IRCWriter = new StreamWriter( IRCStream );
 
 
-			Console.WriteLine( "Connected to: {0}", ircAddr );
+			Console.WriteLine( "Connected to: {0}", ircConfig.IrcAddr );
 			Console.WriteLine( "Sending Login Info!" );
-			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircNick, 0, ircNick ) );
-			SendServerMessage( String.Format( "NICK {0}", ircNick ) );
+			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircConfig.IrcNick, 0, ircConfig.IrcNick ) );
+			SendServerMessage( String.Format( "NICK {0}", ircConfig.IrcNick ) );
 
 			//Time to Authenticate.  
 			//ToDo: Replace with SASL
-			SendServerMessage( "PRIVMSG NICKSERV :identify " + ircPW );
+			SendServerMessage( "PRIVMSG NICKSERV :identify " + ircConfig.IrcPassw );
 
 			//sleep for 5 seconds so that we have a chance to auth and get our mask, if applicable.
 			Thread.Sleep( 5000 );
@@ -153,7 +141,7 @@ namespace BadwaterBallarina.source.IRC {
 
 
 		private void JoinChannels( ) {
-			foreach ( string channel in ircChannels ) {
+			foreach ( string channel in ircConfig.IrcChannels ) {
 				Console.WriteLine( "Joining {0}", channel );
 				JoinChannel( channel );
 			}
@@ -162,7 +150,7 @@ namespace BadwaterBallarina.source.IRC {
 
 		private void sendChannelMessage( string channel, string message ) {
 			Console.WriteLine( channel );
-			if ( ircChannels.Contains( channel ) ) {
+			if ( ircConfig.IrcChannels.Contains( channel ) ) {
 
 				SendServerMessage( String.Format( "PRIVMSG {0} : {1}", channel, message ) );
 			}
