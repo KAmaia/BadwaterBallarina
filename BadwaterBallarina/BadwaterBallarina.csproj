@@ -48,7 +48,7 @@
     <Compile Include="Source\Config\Configurator.cs" />
     <Compile Include="Source\Config\IRCConfig.cs" />
     <Compile Include="Source\IRC\IRC.cs" />
-    <Compile Include="Source\IRC\IRCMessage.cs" />
+    <Compile Include="Source\IRC\ChannelMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

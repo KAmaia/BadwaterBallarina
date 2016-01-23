@@ -6,10 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Text.RegularExpressions;
 
 using BadwaterBallarina.Config;
-using System.Text.RegularExpressions;
 
 namespace BadwaterBallarina.source.IRC {
 	class IRC {
@@ -53,41 +52,86 @@ namespace BadwaterBallarina.source.IRC {
 					if ( incoming.StartsWith( ":" ) ) {
 						incoming = incoming.Remove( 0, 1 );
 					}
-					Console.Out.WriteLine( incoming );
 					string[] incomingSplit = incoming.Split(' ');
 					if ( IsPing( incomingSplit ) ) {
 						PingRespond( incomingSplit );
 					}
-					if ( IsServerMessage( incomingSplit ) ) {
+					else if ( IsServerMessage( incomingSplit ) ) {
 						HandleServerCrapBecauseThereIsALotOfIt( incomingSplit );
+					}
+					else {
+						handleChatMessage( incomingSplit );
 					}
 				}
 			}
 		}
 
-		private void HandleServerCrapBecauseThereIsALotOfIt(string[] incoming ) {
+		private void handleChatMessage( string[ ] incoming ) {
 			string switcher = incoming[1];
-				switch(switcher){
-					//Ignore everything except Nick in use;
-					case "433":
+			switch ( switcher ) {
+				case "JOIN":
+					//doStuff(tm);
+					break;
+				case "PART":
+					//doStuff(tm);
+					break;
+				case "QUIT":
+					//doStuff(tm);
+					break;
+				case "MODE":
+					//doStuff(tm);
+					break;
+				case "NICK":
+					//doStuff(tm);
+					break;
+				case "Kick":
+					//doStuff(tm);
+					break;
+				case "NOTICE":
+					//doStuff(tm);
+					break;
+				//ToDo: Handle actual private messages.
+				//ToDo: Handle Actions.
+				case "PRIVMSG":
+					if ( IsChannelMessage( incoming ) ) {
+						ChannelMessage cm = new ChannelMessage(incoming);
+						Console.WriteLine( "{0} Said {1} on: {2}", cm.Sender, cm.Message, cm.Channel );
+						if (cm.Message.ToLower().Equals("hi belle" ) ) {
+							string replyMessage = "Hello " + cm.Sender;
+							sendChannelMessage( cm.Channel, replyMessage);
+						}
+					}
+					else {
+						Console.WriteLine( String.Join( " ", incoming, 2, incoming.Length - 2 ) );
+					}
+					break;
+			}
+		}
+
+		private void HandleServerCrapBecauseThereIsALotOfIt( string[ ] incoming ) {
+			string switcher = incoming[1];
+			switch ( switcher ) {
+				//Ignore everything except Nick in use;
+				//Because really that's all I care about.
+				case "433":
 					Random rand = new Random();
-					SendServerMessage(String.Format("NICK {0}", ircConfig.IrcNick + rand.Next(10000)));
-					SendServerMessage( String.Format( "PRIVMSG NICKSERV :GHOST {0} {1}", ircConfig.IrcNick, ircConfig.IrcPassw ) );
+					SendServerMessage( String.Format( "NICK {0}", ircConfig.Nick + rand.Next( 10000 ) ) );
+					SendServerMessage( String.Format( "PRIVMSG NICKSERV :GHOST {0} {1}", ircConfig.Nick, ircConfig.PassW ) );
 					Thread.Sleep( 2000 );
-					SendServerMessage( String.Format( "NICK {0}", ircConfig.IrcNick ) );
-					SendServerMessage( String.Format( "PRIVMSG NICKSERV :Identify {0}", ircConfig.IrcPassw ) );
+					SendServerMessage( String.Format( "NICK {0}", ircConfig.Nick ) );
+					SendServerMessage( String.Format( "PRIVMSG NICKSERV :Identify {0}", ircConfig.PassW ) );
 					Thread.Sleep( 5000 );
 					JoinChannels( );
 					break;
 			}
 		}
 
-		private bool IsServerMessage( string[] incoming ) {
+		private bool IsServerMessage( string[ ] incoming ) {
 			//check to see if the sender is the server
 			string sender = incoming[0];
 			Regex regex = new Regex(@"\..*\..+$");
 			Match possibleSender = regex.Match(sender);
-			Match serverMatch = regex.Match(ircConfig.IrcAddr);
+			Match serverMatch = regex.Match(ircConfig.Addr);
 			if ( !serverMatch.Success ) {
 				throw new Exception( "Hey, something went horribly wrong in serverMessage!" );
 			}
@@ -96,11 +140,15 @@ namespace BadwaterBallarina.source.IRC {
 			}
 			string possVal = possibleSender.Value;
 			string servVal = serverMatch.Value;
-			return ( servVal == possVal ); 
+			return ( servVal == possVal );
 		}
 
 		private bool IsPing( string[ ] incoming ) {
 			return incoming[0].ToLower( ) == "ping";
+		}
+
+		private bool IsChannelMessage( string[ ] incoming ) {
+			return incoming[2].StartsWith( "#" );
 		}
 
 		private void PingRespond( string[ ] incoming ) {
@@ -110,27 +158,28 @@ namespace BadwaterBallarina.source.IRC {
 			Console.WriteLine( "Responding with PONG {0}", pingHash );
 			SendServerMessage( "PONG " + pingHash );
 		}
+
 		private void JoinChannel( string channel ) {
 			SendServerMessage( String.Format( "JOIN {0}", channel ) );
 		}
 
 		//why do it this way?  Who cares?
 		private void InternalConnect( ) {
-			IRCConnection = new TcpClient( ircConfig.IrcAddr, ircConfig.IrcPort );
+			IRCConnection = new TcpClient( ircConfig.Addr, ircConfig.Port );
 			IRCConnection.ReceiveTimeout = 1000 * 60 * 5;
 			IRCStream = IRCConnection.GetStream( );
 			IRCReader = new StreamReader( IRCStream );
 			IRCWriter = new StreamWriter( IRCStream );
 
 
-			Console.WriteLine( "Connected to: {0}", ircConfig.IrcAddr );
+			Console.WriteLine( "Connected to: {0}", ircConfig.Addr );
 			Console.WriteLine( "Sending Login Info!" );
-			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircConfig.IrcNick, 0, ircConfig.IrcNick ) );
-			SendServerMessage( String.Format( "NICK {0}", ircConfig.IrcNick ) );
+			SendServerMessage( String.Format( "USER {0} {1} * : {2}", ircConfig.Nick, 0, ircConfig.Nick ) );
+			SendServerMessage( String.Format( "NICK {0}", ircConfig.Nick ) );
 
 			//Time to Authenticate.  
 			//ToDo: Replace with SASL
-			SendServerMessage( "PRIVMSG NICKSERV :identify " + ircConfig.IrcPassw );
+			SendServerMessage( "PRIVMSG NICKSERV :identify " + ircConfig.PassW );
 
 			//sleep for 5 seconds so that we have a chance to auth and get our mask, if applicable.
 			Thread.Sleep( 5000 );
@@ -141,7 +190,7 @@ namespace BadwaterBallarina.source.IRC {
 
 
 		private void JoinChannels( ) {
-			foreach ( string channel in ircConfig.IrcChannels ) {
+			foreach ( string channel in ircConfig.Channels ) {
 				Console.WriteLine( "Joining {0}", channel );
 				JoinChannel( channel );
 			}
@@ -149,10 +198,10 @@ namespace BadwaterBallarina.source.IRC {
 
 
 		private void sendChannelMessage( string channel, string message ) {
-			Console.WriteLine( channel );
-			if ( ircConfig.IrcChannels.Contains( channel ) ) {
+			
+			if ( ircConfig.Channels.Contains( channel ) ) {
 
-				SendServerMessage( String.Format( "PRIVMSG {0} : {1}", channel, message ) );
+				SendServerMessage( String.Format( "PRIVMSG {0} :{1}", channel, message ) );
 			}
 		}
 

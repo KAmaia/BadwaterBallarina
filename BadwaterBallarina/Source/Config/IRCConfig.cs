@@ -11,17 +11,17 @@ namespace BadwaterBallarina.Config {
 		//Config Info
 		public String Name { get; set; }
 		//server info
-		public string IrcAddr { get; set; }
+		public string Addr { get; set; }
 
-		public int IrcPort { get; set; }
+		public int Port { get; set; }
 
 		//User Info
-		public string IrcUser { get; set; }
-		public string IrcNick { get; set; }
-		public string IrcPassw { get; set; }
+		public string User { get; set; }
+		public string Nick { get; set; }
+		public string PassW { get; set; }
 
 		//channel info
-		public List<string> IrcChannels { get; set; }
+		public List<string> Channels { get; set; }
 		#endregion
 
 	}

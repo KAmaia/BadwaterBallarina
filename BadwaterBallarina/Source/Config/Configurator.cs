@@ -30,17 +30,17 @@ namespace BadwaterBallarina.Config {
 				
 				//Validate Server Address
 				//ToDo: RegEx!
-				ircConfig.IrcAddr = xe.GetAttribute( "addr" );
+				ircConfig.Addr = xe.GetAttribute( "addr" );
 				
 				//Will validate ports later.
 				//ToDo: Validate Port Numbers.
-				ircConfig.IrcPort = int.Parse( xe.GetAttribute( "port" ) );
+				ircConfig.Port = int.Parse( xe.GetAttribute( "port" ) );
 
 				//Get Our Username and Nick.
-				ircConfig.IrcUser = xe.GetAttribute( "user_name" );
-				ircConfig.IrcNick = xe.GetAttribute( "nick" );
+				ircConfig.User = xe.GetAttribute( "user_name" );
+				ircConfig.Nick = xe.GetAttribute( "nick" );
 				//Get the server password
-				ircConfig.IrcPassw = xe.GetAttribute( "passw" );
+				ircConfig.PassW = xe.GetAttribute( "passw" );
 				
 				Console.WriteLine( xe.Name );
 				Console.WriteLine( xe.GetAttribute( "name" ) );
@@ -55,7 +55,7 @@ namespace BadwaterBallarina.Config {
 					channelNames.Add(xe1.GetAttribute("addr"));
 					Console.WriteLine( xe1.GetAttribute("name") );
 				}
-				ircConfig.IrcChannels = channelNames;
+				ircConfig.Channels = channelNames;
 
 			}
 			return ircConfig;
