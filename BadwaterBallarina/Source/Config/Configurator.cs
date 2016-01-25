@@ -21,7 +21,6 @@ namespace BadwaterBallarina.Config {
 			XmlNode root = doc.DocumentElement;
 
 			//start reading the config.
-			Console.WriteLine( root.Name );
 			foreach ( XmlElement xe in root ) {
 
 				//Get the Config's Name (Will be the same as the server name).
@@ -46,14 +45,12 @@ namespace BadwaterBallarina.Config {
 				Console.WriteLine( xe.GetAttribute( "name" ) );
 				Console.WriteLine( xe.GetAttribute( "addr" ) );
 				Console.WriteLine( xe.GetAttribute( "port" ) );
-				Console.WriteLine( xe.GetAttribute( "passw" ) );
 
 				//ToDo: Replace this string list with actual channels.  
 				//We'll Figure that out later.
 				List<string> channelNames = new List<string>();
 				foreach (XmlElement xe1 in xe ) {
 					channelNames.Add(xe1.GetAttribute("addr"));
-					Console.WriteLine( xe1.GetAttribute("name") );
 				}
 				ircConfig.Channels = channelNames;
 
