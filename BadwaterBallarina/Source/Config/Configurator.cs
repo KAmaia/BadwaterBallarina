@@ -11,7 +11,7 @@ namespace BadwaterBallarina.Source.Config {
 		public Configurator( ) {
 
 		}
-		public IRCConfig ReadAndCreateConfig( string filePath ) {
+		public IRCConfig ReadAndCreateConfigFromFile( string filePath ) {
 			//Listify this.  But not yet
 			XmlDocument doc = new XmlDocument();
 			doc.Load( filePath );

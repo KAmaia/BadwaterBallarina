@@ -22,7 +22,7 @@ namespace BadwaterBallarina {
 		private Ballarina( ) {
 			Configurator cf = new Configurator();
 			//ToDo: Unhardcode config path.
-			ballarinaIRC = new IRC( cf.ReadAndCreateConfig( "..\\Configs\\connections.cfg" ) );
+			ballarinaIRC = new IRC( cf.ReadAndCreateConfigFromFile( "..\\Configs\\connections.cfg" ) );
 		}
 	}
 }

@@ -180,7 +180,6 @@ namespace BadwaterBallarina.Source.IRC {
 					}
 					Console.WriteLine( "" );
 					break;
-				//ToDo: Handle actual private messages.
 				//ToDo: Handle Actions.
 				case "PRIVMSG":
 					if ( IsChannelMessage( incoming ) ) {
