@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 //Local Uses
-using BadwaterBallarina.Config;
+using BadwaterBallarina.Source.Config;
 using BadwaterBallarina.Source.IRC;
 
 namespace BadwaterBallarina {

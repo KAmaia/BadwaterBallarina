@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina.Source.IRC {
+namespace BadwaterBallarina.Source.IRC.Messages {
 	class PrivateMessage : AIrcMessage, IIrcMessage {
 
 		public PrivateMessage( StreamWriter outStream, string[ ] incoming ) : base( outStream, incoming ) {

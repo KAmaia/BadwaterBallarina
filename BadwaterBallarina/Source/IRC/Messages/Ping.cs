@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina.Source.IRC {
+namespace BadwaterBallarina.Source.IRC.Messages {
 	class Ping {
 		private StreamWriter outStream;
 		private string pingHash = "PONG ";

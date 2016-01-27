@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina.Config {
+namespace BadwaterBallarina.Source.Config {
 	class IRCConfig {
 		//ToDo: Serialize this.  
 		#region Autoproperties

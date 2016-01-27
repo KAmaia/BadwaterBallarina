@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BadwaterBallarina.Source.IRC;
 using System.IO;
 
-namespace BadwaterBallarina.Source.IRC {
+namespace BadwaterBallarina.Source.IRC.Messages {
 	class ChannelMessage : AIrcMessage, IIrcMessage {
 
 		private string channel;

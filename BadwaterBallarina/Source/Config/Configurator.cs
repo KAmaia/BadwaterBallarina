@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
 
-namespace BadwaterBallarina.Config {
+namespace BadwaterBallarina.Source.Config {
 	class Configurator {
 		public Configurator( ) {
 

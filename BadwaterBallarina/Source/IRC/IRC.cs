@@ -8,7 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-using BadwaterBallarina.Config;
+using BadwaterBallarina.Source.Config;
+using BadwaterBallarina.Source.IRC.Messages;
 
 namespace BadwaterBallarina.Source.IRC {
 	class IRC {
