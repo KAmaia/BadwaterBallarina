@@ -13,10 +13,16 @@ using BadwaterBallarina.Config;
 namespace BadwaterBallarina.source.IRC {
 	class IRC {
 
+		private enum MESSAGE_TYPE {
+			PRIVATE_MESSAGE,
+			CHANNEL_MESSAGE
+		};
+
 		private bool connected;
 
 		private IRCConfig ircConfig;
 
+		private StreamWriter ircWriter;
 		#region NETWORK STUFF
 		public TcpClient IRCConnection { get; private set; }
 		public NetworkStream IRCStream { get; private set; }
@@ -94,19 +100,18 @@ namespace BadwaterBallarina.source.IRC {
 				//ToDo: Handle Actions.
 				case "PRIVMSG":
 					if ( IsChannelMessage( incoming ) ) {
-						ChannelMessage cm = new ChannelMessage(incoming);
-						Console.WriteLine( "{0} Said {1} on: {2}", cm.Sender, cm.Message, cm.Channel );
-						if (cm.Message.ToLower().Equals("hi belle" ) ) {
-							string replyMessage = "Hello " + cm.Sender;
-							sendChannelMessage( cm.Channel, replyMessage);
-						}
+						ChannelMessage cm = new ChannelMessage(ircWriter, incoming);
+						cm.Respond( string.Format( "Got That, {0}", cm.Sender ) );
 					}
-					else {
-						Console.WriteLine( String.Join( " ", incoming, 2, incoming.Length - 2 ) );
+					else if ( IsPrivateMessage( incoming ) ) {
+						PrivateMessage pm = new PrivateMessage(ircWriter, incoming);
+						pm.Respond( string.Format( "Got That, {0}", pm.Sender ) );
+
 					}
 					break;
 			}
 		}
+
 
 		private void HandleServerCrapBecauseThereIsALotOfIt( string[ ] incoming ) {
 			string switcher = incoming[1];
@@ -125,6 +130,7 @@ namespace BadwaterBallarina.source.IRC {
 					break;
 			}
 		}
+
 
 		private bool IsServerMessage( string[ ] incoming ) {
 			//check to see if the sender is the server
@@ -147,9 +153,17 @@ namespace BadwaterBallarina.source.IRC {
 			return incoming[0].ToLower( ) == "ping";
 		}
 
+		#region delete these
+		//OOPS!  I forgot to validate the nick by running 
+		//BOTH incoming[2] and config.Nick through ToLower()
+		private bool IsPrivateMessage(string[] incoming ) {
+			return incoming[2].ToLower( ).Equals( ircConfig.Nick.ToLower( ) );
+		}
+
 		private bool IsChannelMessage( string[ ] incoming ) {
 			return incoming[2].StartsWith( "#" );
 		}
+		#endregion
 
 		private void PingRespond( string[ ] incoming ) {
 			Console.Beep( );
@@ -170,7 +184,7 @@ namespace BadwaterBallarina.source.IRC {
 			IRCStream = IRCConnection.GetStream( );
 			IRCReader = new StreamReader( IRCStream );
 			IRCWriter = new StreamWriter( IRCStream );
-
+			ircWriter = IRCWriter;
 
 			Console.WriteLine( "Connected to: {0}", ircConfig.Addr );
 			Console.WriteLine( "Sending Login Info!" );

@@ -47,8 +47,11 @@
     <Compile Include="Source\Ballarina.cs" />
     <Compile Include="Source\Config\Configurator.cs" />
     <Compile Include="Source\Config\IRCConfig.cs" />
+    <Compile Include="Source\IRC\AIrcMessage.cs" />
+    <Compile Include="Source\IRC\IIrcMessage.cs" />
     <Compile Include="Source\IRC\IRC.cs" />
     <Compile Include="Source\IRC\ChannelMessage.cs" />
+    <Compile Include="Source\IRC\PrivateMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

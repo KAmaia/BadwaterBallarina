@@ -1,27 +1,30 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using BadwaterBallarina.source.IRC;
+using System.IO;
+
 namespace BadwaterBallarina.source.IRC {
-	class ChannelMessage {
+	class ChannelMessage : AIrcMessage, IIrcMessage {
 
-		public string Sender { get; set; }
-		public string Channel { get; set; }
-		public string Message { get; set; }
+		private string channel;
 
-		public ChannelMessage( string[ ] incomingMessage ) {
-			makeThisReadable( incomingMessage );
+		public string Channel { get { return channel; } }
+
+		public ChannelMessage( StreamWriter outStream, string[ ] incomingMessage ) : base( outStream, incomingMessage ) {
+			
+			channel = incomingMessage[2];
+			responseString = responseString + channel + " :";
 		}
 
-		private void makeThisReadable(string[] incoming ) {
-			Sender = incoming[0].Substring( 0, incoming[0].IndexOf( '!' ) );
-			Channel = incoming[2];
-
-			Message = String.Join( " ", incoming, 3, incoming.Length - 3);
-			Message = Message.Substring( 1 );
+		public void Respond( string response ) {
+			responseString = responseString + response;
+			outStream.WriteLine(responseString);
+			outStream.Flush( );
 		}
-
 	}
 }
