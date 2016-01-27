@@ -6,16 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Source.IRC.Messages {
-	class PrivateMessage : AIrcMessage, IIrcMessage {
+	class PrivateMessage : AIrcMessage {
 
 		public PrivateMessage( StreamWriter outStream, string[ ] incoming ) : base( outStream, incoming ) {
 			responseString = responseString + sender + " :";
 		}
 
-		public void Respond( string response ) {
+		public override void Respond( string response ) {
 
 			responseString += response;
-			Console.WriteLine( responseString );
 			outStream.WriteLine( responseString );
 			outStream.Flush( );
 		}

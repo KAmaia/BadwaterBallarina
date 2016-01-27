@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina.Source.IRC.Messages {
-	interface IIrcMessage {
-
-		void Respond(string response );
-
+namespace BadwaterBallarina.Source.IRC.ServersChannels {
+	class Channel {
 	}
 }
-

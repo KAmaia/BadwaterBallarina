@@ -19,16 +19,17 @@ namespace BadwaterBallarina.Source.IRC.Messages {
 		public string Sender { get { return sender; } }
 		public string Message { get { return message; } }
 
-		public AIrcMessage(StreamWriter outStream, string[ ] incoming ) {
+		public AIrcMessage( StreamWriter outStream, string[ ] incoming ) {
 			sender = incoming[0].Substring( 0, incoming[0].IndexOf( '!' ) );
 			this.outStream = outStream;
 			this.incoming = incoming;
 			responseString = "PRIVMSG ";
-               message = MakeThisReadable( );
+			message = MakeThisReadable( );
 		}
 
-		protected string MakeThisReadable(  ) {
-			
+		public abstract void Respond( string response );
+
+		protected string MakeThisReadable( ) {
 			return String.Join( " ", incoming, 3, incoming.Length - 3 ).Substring( 1 );
 		}
 

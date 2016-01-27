@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Source.IRC.Messages{
-	class ServerMessage : AIrcMessage, IIrcMessage {
+	class ServerMessage : AIrcMessage{
 		public ServerMessage(StreamWriter outStream, string[] incoming): base(outStream, incoming ) {
 			responseString = "";
 		}
-		public void Respond( string response ) {
+		public override void Respond( string response ) {
 			throw new NotImplementedException( );
 		}
 	}

@@ -9,7 +9,7 @@ using BadwaterBallarina.Source.IRC;
 using System.IO;
 
 namespace BadwaterBallarina.Source.IRC.Messages {
-	class ChannelMessage : AIrcMessage, IIrcMessage {
+	class ChannelMessage : AIrcMessage {
 
 		private string channel;
 
@@ -20,7 +20,7 @@ namespace BadwaterBallarina.Source.IRC.Messages {
 			responseString = responseString + channel + " :";
 		}
 
-		public void Respond( string response ) {
+		public override void Respond( string response ) {
 			responseString = responseString + response;
 			outStream.WriteLine( responseString );
 			outStream.Flush( );

@@ -47,13 +47,15 @@
     <Compile Include="Source\Ballarina.cs" />
     <Compile Include="Source\Config\Configurator.cs" />
     <Compile Include="Source\Config\IRCConfig.cs" />
+    <Compile Include="Source\IRC\Commands\ICommand.cs" />
     <Compile Include="Source\IRC\Messages\AIrcMessage.cs" />
-    <Compile Include="Source\IRC\Messages\IIrcMessage.cs" />
     <Compile Include="Source\IRC\IRC.cs" />
     <Compile Include="Source\IRC\Messages\ChannelMessage.cs" />
     <Compile Include="Source\IRC\Messages\Ping.cs" />
     <Compile Include="Source\IRC\Messages\PrivateMessage.cs" />
     <Compile Include="Source\IRC\Messages\ServerMessage.cs" />
+    <Compile Include="Source\IRC\ServersChannels\Channel.cs" />
+    <Compile Include="Source\IRC\ServersChannels\Server.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
