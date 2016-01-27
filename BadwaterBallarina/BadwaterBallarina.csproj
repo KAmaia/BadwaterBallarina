@@ -51,7 +51,9 @@
     <Compile Include="Source\IRC\IIrcMessage.cs" />
     <Compile Include="Source\IRC\IRC.cs" />
     <Compile Include="Source\IRC\ChannelMessage.cs" />
+    <Compile Include="Source\IRC\Ping.cs" />
     <Compile Include="Source\IRC\PrivateMessage.cs" />
+    <Compile Include="Source\IRC\ServerMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

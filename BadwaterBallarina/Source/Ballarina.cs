@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 //Local Uses
 using BadwaterBallarina.Config;
-using BadwaterBallarina.source.IRC;
+using BadwaterBallarina.Source.IRC;
 
 namespace BadwaterBallarina {
 	class Ballarina {
@@ -18,19 +18,11 @@ namespace BadwaterBallarina {
 			Console.WriteLine( "Press Any Key To Continue!" );
 			Console.Read( );
 		}
-
+		//private CTor, because we don't need it to be public.
 		private Ballarina( ) {
 			Configurator cf = new Configurator();
-
-			//Commented out so we can test the CONFIGURATOR!
+			//ToDo: Unhardcode config path.
 			ballarinaIRC = new IRC( cf.ReadAndCreateConfig( "..\\Configs\\connections.cfg" ) );
-
 		}
-
-	
-		private void IRCCommandReceived(string ircCommand ) {
-
-		}
-
 	}
 }

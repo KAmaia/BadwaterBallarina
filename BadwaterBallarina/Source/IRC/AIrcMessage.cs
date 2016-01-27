@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BadwaterBallarina.source.IRC {
+namespace BadwaterBallarina.Source.IRC {
 	abstract class AIrcMessage {
 
 		protected string message;
@@ -14,7 +14,7 @@ namespace BadwaterBallarina.source.IRC {
 		protected StreamWriter outStream;
 		protected string[] incoming;
 
-		protected string responseString = "PRIVMSG ";
+		protected string responseString;
 
 		public string Sender { get { return sender; } }
 		public string Message { get { return message; } }
@@ -23,7 +23,8 @@ namespace BadwaterBallarina.source.IRC {
 			sender = incoming[0].Substring( 0, incoming[0].IndexOf( '!' ) );
 			this.outStream = outStream;
 			this.incoming = incoming;
-			message = MakeThisReadable( );
+			responseString = "PRIVMSG ";
+               message = MakeThisReadable( );
 		}
 
 		protected string MakeThisReadable(  ) {
