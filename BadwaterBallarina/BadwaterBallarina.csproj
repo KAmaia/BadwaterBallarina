@@ -47,6 +47,7 @@
     <Compile Include="Source\Ballarina.cs" />
     <Compile Include="Source\Config\Configurator.cs" />
     <Compile Include="Source\Config\IRCConfig.cs" />
+    <Compile Include="Source\IRC\Commands\NameCommand.cs" />
     <Compile Include="Source\IRC\Commands\HelloCommand.cs" />
     <Compile Include="Source\IRC\Commands\ICommand.cs" />
     <Compile Include="Source\IRC\Messages\AIrcMessage.cs" />

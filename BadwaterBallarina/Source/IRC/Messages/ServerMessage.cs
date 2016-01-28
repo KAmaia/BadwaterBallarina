@@ -13,5 +13,9 @@ namespace BadwaterBallarina.Source.IRC.Messages{
 		public override void Respond( string response ) {
 			throw new NotImplementedException( );
 		}
+
+		protected override string FormatResponse( string response ) {
+			throw new NotImplementedException( );
+		}
 	}
 }

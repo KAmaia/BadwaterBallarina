@@ -77,10 +77,15 @@ namespace BadwaterBallarina.Source.IRC {
 		}
 		//ToDo: Move this crap the hell out of here.
 		private void HandleServerCrapBecauseThereIsALotOfIt( string[ ] incoming ) {
+
 			string switcher = incoming[1];
 			switch ( switcher ) {
-				//Ignore everything except Nick in use;
-				//Because really that's all I care about.
+				case "353":
+						//get names list
+						foreach(string s in incoming ) {
+						Console.WriteLine( s );
+					}
+					break;
 				case "433":
 					Random rand = new Random();
 					SendServerMessage( String.Format( "NICK {0}", ircConfig.Nick + rand.Next( 10000 ) ) );
@@ -91,6 +96,7 @@ namespace BadwaterBallarina.Source.IRC {
 					Thread.Sleep( 5000 );
 					JoinChannels( );
 					break;
+
 			}
 		}
 
@@ -140,6 +146,7 @@ namespace BadwaterBallarina.Source.IRC {
 			if ( !possibleSender.Success ) {
 				return false;
 			}
+
 			string possVal = possibleSender.Value;
 			string servVal = serverMatch.Value;
 			return ( servVal == possVal );
@@ -181,11 +188,11 @@ namespace BadwaterBallarina.Source.IRC {
 					break;
 				case "NOTICE":
 					//doStuff(tm);
-					
+
 					break;
 				//ToDo: Handle Actions.
 				case "PRIVMSG":
-				
+
 					if ( !IsCommand( incoming ) ) {
 						if ( IsChannelMessage( incoming ) ) {
 							//This is where Belle Will talk
@@ -201,10 +208,10 @@ namespace BadwaterBallarina.Source.IRC {
 		private bool IsCommand( string[ ] incoming ) {
 			string match = incoming[3].Substring(1);
 			Console.WriteLine( match );
-			if ( match.StartsWith( cmdPrefix )){
+			if ( match.StartsWith( cmdPrefix ) ) {
 				match = match.Substring( 1 );
 				foreach ( ICommand i in Commands ) {
-					if ( match.ToLower( ).Equals( i.Alias.ToLower() )){
+					if ( match.ToLower( ).Equals( i.Alias.ToLower( ) ) ) {
 						if ( IsChannelMessage( incoming ) ) {
 							ChannelMessage cm = new ChannelMessage(ircWriter, incoming);
 							i.Execute( cm );

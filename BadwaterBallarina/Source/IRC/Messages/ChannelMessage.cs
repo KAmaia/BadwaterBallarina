@@ -17,13 +17,16 @@ namespace BadwaterBallarina.Source.IRC.Messages {
 
 		public ChannelMessage( StreamWriter outStream, string[ ] incomingMessage ) : base( outStream, incomingMessage ) {
 			channel = incomingMessage[2];
-			responseString = responseString + channel + " :";
 		}
 
 		public override void Respond( string response ) {
-			responseString = responseString + response;
-			outStream.WriteLine( responseString );
+			outStream.WriteLine( FormatResponse(response) );
 			outStream.Flush( );
+		}
+
+		protected override string FormatResponse( string response ) {
+			return responseString + channel + " :" + response;
+
 		}
 	}
 }

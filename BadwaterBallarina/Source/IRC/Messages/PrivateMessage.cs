@@ -9,14 +9,15 @@ namespace BadwaterBallarina.Source.IRC.Messages {
 	class PrivateMessage : AIrcMessage {
 
 		public PrivateMessage( StreamWriter outStream, string[ ] incoming ) : base( outStream, incoming ) {
-			responseString = responseString + sender + " :";
 		}
 
 		public override void Respond( string response ) {
-
-			responseString += response;
-			outStream.WriteLine( responseString );
+			outStream.WriteLine( FormatResponse( response ) );
 			outStream.Flush( );
+		}
+
+		protected override string FormatResponse( string response ) {
+			return responseString + sender + " :" + response;
 		}
 	}
 }

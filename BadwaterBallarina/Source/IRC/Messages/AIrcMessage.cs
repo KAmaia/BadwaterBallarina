@@ -29,6 +29,8 @@ namespace BadwaterBallarina.Source.IRC.Messages {
 
 		public abstract void Respond( string response );
 
+		protected abstract string FormatResponse( string response );
+
 		protected string MakeThisReadable( ) {
 			return String.Join( " ", incoming, 3, incoming.Length - 3 ).Substring( 1 );
 		}
