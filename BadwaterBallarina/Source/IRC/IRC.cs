@@ -10,9 +10,13 @@ using System.Text.RegularExpressions;
 
 using BadwaterBallarina.Source.Config;
 using BadwaterBallarina.Source.IRC.Messages;
+using BadwaterBallarina.Source.IRC.Commands;
 
 namespace BadwaterBallarina.Source.IRC {
 	class IRC {
+		private string cmdPrefix = ">";
+		private List<ICommand> Commands;
+
 		private IRCConfig ircConfig;
 
 		private bool connected;
@@ -29,6 +33,8 @@ namespace BadwaterBallarina.Source.IRC {
 		public IRC( IRCConfig config ) {
 			ircConfig = config;
 			connected = false;
+			Commands = new List<ICommand>( );
+			Commands.Add( new CmdHello( ) );
 		}
 		#endregion
 
@@ -175,23 +181,54 @@ namespace BadwaterBallarina.Source.IRC {
 					break;
 				case "NOTICE":
 					//doStuff(tm);
-					foreach (string s in incoming ) {
+					foreach ( string s in incoming ) {
 						Console.Write( s + " " );
 					}
 					Console.WriteLine( "" );
 					break;
 				//ToDo: Handle Actions.
 				case "PRIVMSG":
-					if ( IsChannelMessage( incoming ) ) {
-						ChannelMessage cm = new ChannelMessage(ircWriter, incoming);
-						cm.Respond( string.Format( "Got That, {0}", cm.Sender ) );
+					Console.WriteLine( "==+==" );
+					foreach(string s in incoming ) {
+						Console.WriteLine( s );
 					}
-					else if ( IsPrivateMessage( incoming ) ) {
-						PrivateMessage pm = new PrivateMessage(ircWriter, incoming);
-						pm.Respond( string.Format( "Got That, {0}", pm.Sender ) );
+					Console.WriteLine( "==+==" );
+					if ( !IsCommand( incoming ) ) {
+						if ( IsChannelMessage( incoming ) ) {
+							ChannelMessage cm = new ChannelMessage(ircWriter, incoming);
+							cm.Respond( string.Format( "Got That, {0}", cm.Sender ) );
+						}
+						else if ( IsPrivateMessage( incoming ) ) {
+							PrivateMessage pm = new PrivateMessage(ircWriter, incoming);
+							pm.Respond( string.Format( "Got That, {0}", pm.Sender ) );
 
+						}
 					}
 					break;
+			}
+		}
+
+		private bool IsCommand( string[ ] incoming ) {
+			string match = incoming[3].Substring(1);
+			Console.WriteLine( match );
+			if ( match.StartsWith( cmdPrefix )){
+				match = match.Substring( 1 );
+				foreach ( ICommand i in Commands ) {
+					if ( match.ToLower( ).Equals( i.Alias.ToLower() )){
+						if ( IsChannelMessage( incoming ) ) {
+							ChannelMessage cm = new ChannelMessage(ircWriter, incoming);
+							i.Execute( cm );
+						}
+						else if ( IsPrivateMessage( incoming ) ) {
+							PrivateMessage pm = new PrivateMessage(ircWriter, incoming);
+							i.Execute( pm );
+						}
+					}
+				}
+				return true;
+			}
+			else {
+				return false;
 			}
 		}
 
