@@ -16,6 +16,8 @@ namespace BadwaterBallarina.Source.IRC.Commands {
 		public void Execute( AIrcMessage message ) {
 			message.Respond( "Hello " + message.Sender );
 			//making a change for commit
+
+			//and another one
 		}
 	}
 }
