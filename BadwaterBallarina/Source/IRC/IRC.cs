@@ -181,27 +181,17 @@ namespace BadwaterBallarina.Source.IRC {
 					break;
 				case "NOTICE":
 					//doStuff(tm);
-					foreach ( string s in incoming ) {
-						Console.Write( s + " " );
-					}
-					Console.WriteLine( "" );
+					
 					break;
 				//ToDo: Handle Actions.
 				case "PRIVMSG":
-					Console.WriteLine( "==+==" );
-					foreach(string s in incoming ) {
-						Console.WriteLine( s );
-					}
-					Console.WriteLine( "==+==" );
+				
 					if ( !IsCommand( incoming ) ) {
 						if ( IsChannelMessage( incoming ) ) {
-							ChannelMessage cm = new ChannelMessage(ircWriter, incoming);
-							cm.Respond( string.Format( "Got That, {0}", cm.Sender ) );
+							//This is where Belle Will talk
 						}
 						else if ( IsPrivateMessage( incoming ) ) {
-							PrivateMessage pm = new PrivateMessage(ircWriter, incoming);
-							pm.Respond( string.Format( "Got That, {0}", pm.Sender ) );
-
+							//This is where Belle Will Talk Privately
 						}
 					}
 					break;
