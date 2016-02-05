@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Source.Morse {
 	class MorseLookupTable {
+
+		const int DIT_LENGTH = 100;
+		const int DAH_LENGTH = DIT_LENGTH * 3;
+		const int FREQ = 700;
+
+		private static object myLock = new object();
 		private static Dictionary<char, string> morseLookup = new Dictionary<char, string> {
 			//letters
 			{ 'a', ".-" },
@@ -69,5 +76,6 @@ namespace BadwaterBallarina.Source.Morse {
 			else return "";
 
 		}
+		
 	}
 }

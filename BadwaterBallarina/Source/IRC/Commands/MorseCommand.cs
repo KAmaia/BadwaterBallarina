@@ -29,8 +29,10 @@ namespace BadwaterBallarina.Source.IRC.Commands {
 				response += MorseLookupTable.LookupChar( c ) + " ";
 			}
 			message.Respond( response );
-			Thread morsePlayThread = new Thread(() => playMorse( response ));
-			morsePlayThread.Start( );
+			//Uncomment below to simulate a radio room circa 1900
+
+			//Thread morsePlayThread = new Thread(() => playMorse( response ));
+			//morsePlayThread.Start( );
 		}
 		private void playMorse( string s ) {
 			lock ( myLock ) {
