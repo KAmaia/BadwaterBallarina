@@ -7,10 +7,6 @@ using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Source.Morse {
 	class MorseLookupTable {
-
-		const int DIT_LENGTH = 100;
-		const int DAH_LENGTH = DIT_LENGTH * 3;
-		const int FREQ = 700;
 		
 		private static Dictionary<char, string> morseLookup = new Dictionary<char, string> {
 			//letters
