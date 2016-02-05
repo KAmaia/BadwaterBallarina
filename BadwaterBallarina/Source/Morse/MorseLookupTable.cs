@@ -11,8 +11,7 @@ namespace BadwaterBallarina.Source.Morse {
 		const int DIT_LENGTH = 100;
 		const int DAH_LENGTH = DIT_LENGTH * 3;
 		const int FREQ = 700;
-
-		private static object myLock = new object();
+		
 		private static Dictionary<char, string> morseLookup = new Dictionary<char, string> {
 			//letters
 			{ 'a', ".-"    },
