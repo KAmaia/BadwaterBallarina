@@ -35,6 +35,7 @@ namespace BadwaterBallarina.Source.IRC {
 			connected = false;
 			Commands = new List<ICommand>( );
 			Commands.Add( new CmdHello( ) );
+			Commands.Add( new CmdMorse( ) );
 		}
 		#endregion
 
@@ -209,6 +210,7 @@ namespace BadwaterBallarina.Source.IRC {
 			string match = incoming[3].Substring(1);
 			Console.WriteLine( match );
 			if ( match.StartsWith( cmdPrefix ) ) {
+				incoming[3] = incoming[3].Substring( 1 );
 				match = match.Substring( 1 );
 				foreach ( ICommand i in Commands ) {
 					if ( match.ToLower( ).Equals( i.Alias.ToLower( ) ) ) {

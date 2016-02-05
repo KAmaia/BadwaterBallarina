@@ -16,7 +16,7 @@ namespace BadwaterBallarina.Source.Config {
 			XmlDocument doc = new XmlDocument();
 			doc.Load( filePath );
 			Console.WriteLine( filePath );
-			IRCConfig ircConfig = new IRCConfig();
+			IRCConfig config = new IRCConfig();
 
 			XmlNode root = doc.DocumentElement;
 
@@ -25,21 +25,21 @@ namespace BadwaterBallarina.Source.Config {
 
 				//Get the Config's Name (Will be the same as the server name).
 				//HAHAHA this one doesn't need validation!
-				ircConfig.Name = xe.GetAttribute( "name" );
+				config.Name = xe.GetAttribute( "name" );
 				
 				//Validate Server Address
 				//ToDo: RegEx!
-				ircConfig.Addr = xe.GetAttribute( "addr" );
+				config.Addr = xe.GetAttribute( "addr" );
 				
 				//Will validate ports later.
 				//ToDo: Validate Port Numbers.
-				ircConfig.Port = int.Parse( xe.GetAttribute( "port" ) );
+				config.Port = int.Parse( xe.GetAttribute( "port" ) );
 
 				//Get Our Username and Nick.
-				ircConfig.User = xe.GetAttribute( "user_name" );
-				ircConfig.Nick = xe.GetAttribute( "nick" );
+				config.User = xe.GetAttribute( "user_name" );
+				config.Nick = xe.GetAttribute( "nick" );
 				//Get the server password
-				ircConfig.PassW = xe.GetAttribute( "passw" );
+				config.PassW = xe.GetAttribute( "passw" );
 				
 				Console.WriteLine( xe.Name );
 				Console.WriteLine( xe.GetAttribute( "name" ) );
@@ -52,10 +52,10 @@ namespace BadwaterBallarina.Source.Config {
 				foreach (XmlElement xe1 in xe ) {
 					channelNames.Add(xe1.GetAttribute("addr"));
 				}
-				ircConfig.Channels = channelNames;
+				config.Channels = channelNames;
 
 			}
-			return ircConfig;
+			return config;
 		}
 
 	}

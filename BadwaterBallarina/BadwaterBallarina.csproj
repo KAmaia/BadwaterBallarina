@@ -47,6 +47,7 @@
     <Compile Include="Source\Ballarina.cs" />
     <Compile Include="Source\Config\Configurator.cs" />
     <Compile Include="Source\Config\IRCConfig.cs" />
+    <Compile Include="Source\IRC\Commands\AnnoyIrinixCommand.cs" />
     <Compile Include="Source\IRC\Commands\NameCommand.cs" />
     <Compile Include="Source\IRC\Commands\HelloCommand.cs" />
     <Compile Include="Source\IRC\Commands\ICommand.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Source\IRC\Messages\PrivateMessage.cs" />
     <Compile Include="Source\IRC\Messages\ServerMessage.cs" />
     <Compile Include="Source\IRC\Listener.cs" />
+    <Compile Include="Source\Morse\LookupTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
