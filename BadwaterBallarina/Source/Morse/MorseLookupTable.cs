@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Source.Morse {
-	class LookupTable {
+	class MorseLookupTable {
 		private static Dictionary<char, string> morseLookup = new Dictionary<char, string> {
 			//letters
 			{ 'a', ".-" },

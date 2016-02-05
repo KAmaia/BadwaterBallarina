@@ -26,7 +26,7 @@ namespace BadwaterBallarina.Source.IRC.Commands {
 
 			string response = "";
 			foreach ( char c in convertMe ) {
-				response += LookupTable.LookupChar( c ) + " ";
+				response += MorseLookupTable.LookupChar( c ) + " ";
 			}
 			message.Respond( response );
 			Thread morsePlayThread = new Thread(() => playMorse( response ));
