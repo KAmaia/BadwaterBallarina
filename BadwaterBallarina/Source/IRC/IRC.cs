@@ -36,6 +36,9 @@ namespace BadwaterBallarina.Source.IRC {
 			Commands = new List<ICommand>( );
 			Commands.Add( new CmdHello( ) );
 			Commands.Add( new CmdMorse( ) );
+
+			//MUST BE LAST SO HELP MESSAGES ARE PROPERLY INPUT
+			Commands.Add( new HelpCommand( Commands ) );
 		}
 		#endregion
 
@@ -82,8 +85,8 @@ namespace BadwaterBallarina.Source.IRC {
 			string switcher = incoming[1];
 			switch ( switcher ) {
 				case "353":
-						//get names list
-						foreach(string s in incoming ) {
+					//get names list
+					foreach ( string s in incoming ) {
 						Console.WriteLine( s );
 					}
 					break;
@@ -212,6 +215,8 @@ namespace BadwaterBallarina.Source.IRC {
 			if ( match.StartsWith( cmdPrefix ) ) {
 				incoming[3] = incoming[3].Substring( 1 );
 				match = match.Substring( 1 );
+
+
 				foreach ( ICommand i in Commands ) {
 					if ( match.ToLower( ).Equals( i.Alias.ToLower( ) ) ) {
 						if ( IsChannelMessage( incoming ) ) {

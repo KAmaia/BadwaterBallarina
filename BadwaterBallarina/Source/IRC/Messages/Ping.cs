@@ -17,7 +17,6 @@ namespace BadwaterBallarina.Source.IRC.Messages {
 		}
 
 		public void Respond( ) {
-			Console.Beep( );
 			outStream.WriteLine( pingHash );
 			outStream.Flush( );
 		}

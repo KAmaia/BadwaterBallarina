@@ -10,6 +10,13 @@ using System.Threading;
 namespace BadwaterBallarina.Source.IRC.Commands {
 	class CmdMorse : ICommand {
 		public string Alias { get; set; }
+
+		public string HelpString {
+			get {
+				return "Annoys the living hell out of Irinix";
+			}
+		}
+
 		private object myLock = new object();
 
 		const int DIT_LENGTH = 100;

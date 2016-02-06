@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace BadwaterBallarina.Source.IRC.Commands {
 	interface ICommand {
-		string Alias { get;  set; }
-		void Execute(AIrcMessage message );
+		string Alias { get; }
+		string HelpString { get; }
+		void Execute( AIrcMessage message );
 	}
 }

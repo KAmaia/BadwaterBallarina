@@ -8,7 +8,13 @@ using BadwaterBallarina.Source.IRC.Messages;
 namespace BadwaterBallarina.Source.IRC.Commands {
 	class CmdNames : ICommand {
 		public string Alias { get;  set; }
-		
+
+		public string HelpString {
+			get {
+				return "NOT YET IMPLEMENTED";
+			}
+		}
+
 		public CmdNames( ) {
 			Alias = "Names";
 		}

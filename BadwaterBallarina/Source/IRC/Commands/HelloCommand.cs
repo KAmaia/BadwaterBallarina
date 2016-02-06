@@ -7,8 +7,14 @@ using BadwaterBallarina.Source.IRC.Messages;
 
 namespace BadwaterBallarina.Source.IRC.Commands {
 	class CmdHello : ICommand {
-		public string Alias { get;  set; }
-		
+		public string Alias { get;  }
+
+		public string HelpString {
+			get {
+				return "Says Hello To <sender>";
+			}
+		}
+
 		public CmdHello( ) {
 			Alias = "Hello";
 		}
